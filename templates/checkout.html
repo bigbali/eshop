@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="basket-container">
+    <div class="checkout text-left mb-3">
+        <h1 class="text-center pt-3">Basket</h1>
+        <div class="pt-3 pl-3">
+            <h2>Total items: {{ item_count }}</h2>
+            <h2>Total price: <span class="text-success">${{ total_price }}</span></h2>
+            <a href="/checkout" class="btn btn-primary rounded-0 width-auto">Proceed to Checkout</a>
+        </div>
+    </div>
+    <hr>
+    <div class="text-left">
+        <h2 class="mt-3 ml-3 mb-3 items-in-basket-label">Items in basket:</h2>
+    </div>
+    {% for row in data %}
+    <div class="basket-item text-left">
+        <img src="{{ row[2] }}" alt="{{ row[0] }}" class="my-product-image">
+        <div class="basket-item-details align-top mb-3">
+            <h1 class="align-top">
+                {{ row[0] }}
+            </h1>
+            <p class="align-top">
+                {{ row[1] }}
+            </p>
+            <h2 class="align-top text-success">
+                ${{ row[3] }}
+            </h2>
+            <form action="/basket" method="POST" class="align-top">
+                <input value="{{ row[4] }}" name="item" type="number" style="display: none;">
+                <input value="Remove From Basket" type="submit" class="btn btn-primary rounded-0">
+            </form>
+        </div>
+    </div>
+    <hr class="basket-items-hr">
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ product }}
+{% endblock %}
+
+{% block main %}
+<div class="parent-container text-center">
+    <div class="details-surface text-left">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb rounded-0">
+                {% if subcategory %}
+                <li class="breadcrumb-item"><a href="/?category={{ subcategory[0] }}">{{ subcategory[0].upper() }}</a>
+                </li>
+
+
+                <!-- DO CATEGORIES PROPERLY -->
+
+
+                <!-- <li class="breadcrumb-item"><a href="#">{{ category[0].upper() }}</a></li> -->
+                {% else %}
+                this product is not categorized.
+                {% endif %}
+            </ol>
+        </nav>
+        <h1>
+            {{ data[2] }}
+        </h1>
+        <div class="product-wrapper">
+            <hr>
+            <div class="product-sub-wrapper">
+                <div class="product-image">
+                    <img src="{{ data[4] }}" alt="{{ data[2] }}">
+                </div>
+                <div>
+                </div>
+                <div class="product-details">
+                    <h3>
+                        In stock:
+                        <span class="text-info">
+                            {{ data[6] }}
+                            {% if data[6] == 1 %}
+                            item
+                            {% else %}
+                            items
+                            {% endif %}
+                        </span>
+                    </h3>
+                    <h3>
+                        Sold by <span class="text-info">{{ data[10] }}</span>
+                    </h3>
+                </div>
+                <div class="product-cta">
+                    <h2 class="product-price text-success">${{ data[5] }}</h2>
+                    <form action="/add-to-basket" method="GET" class="w-100">
+                        <input type="number" name="item" class="inline-block d-none" value="{{ data[0] }}">
+                        <div class="row m-0">
+                            <input type="number" min="1" name="amount" class="inline-block w-25 rounded-0 form-control"
+                                value="1">
+                            <input type="submit" value="Add to Basket"
+                                class="btn btn-primary rounded-0 w-75 form-control">
+                        </div>
+                        <!-- <a href="/add-to-basket?item={{ data[0] }}" class="btn btn-primary rounded-0">Add to basket</a> -->
+                    </form>
+                </div>
+            </div>
+            <hr>
+            <div class="product-description">
+                <h2 class="font-weight-bold">Description:</h2>
+                <p>{{ data[3] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<style>
+    body {
+        background-color: white;
+    }
+</style>
+{% endblock %}

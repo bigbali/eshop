@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="search text-left vertical-center">
+    <form action="/" class="search-bar">
+        <!-- <input type="text" name="category" placeholder="Search by Category"> -->
+        <div class="row">
+            <div class="col">
+                <select name="category" class="form-control rounded-0 select">
+                    <option value="">All</option>
+                    {% for option in options %}
+                    <option value="{{ option[0] }}" {% if category %}{% if category.upper() == option[0].upper() %}
+                        selected {% endif %}{% endif %}>
+                        {{ option[0].upper() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <input type="text" name="substring" class="form-control rounded-0" placeholder="Search by Substring"
+                    {% if substring %} value="{{ substring }}" {% endif %}>
+            </div>
+            <div class="limit">
+                <select name="limit" class="form-control rounded-0 select">
+                    <option {% if limit == "10" %} selected {% endif %} value="10">10</option>
+                    <option {% if limit == "25" %} selected {% endif %} value="25">25</option>
+                    <option {% if limit == "50" %} selected {% endif %} value="50">50</option>
+                    <option {% if limit == "100" %} selected {% endif %} value="100">100</option>
+                </select>
+            </div>
+            <div class="col">
+                <input type="submit" value="Search" class="btn btn-secondary rounded-0 search-btn">
+            </div>
+        </div>
+    </form>
+</div>
+{% if data %}
+<div class="product-surface">
+    {% for row in data %}
+    <div class="card product-container">
+        <img src="{{ row[15] }}" loading="lazy" class="card-img-top product" alt="{{ row[13] }}">
+        <div class="card-body text-left">
+            <p class="product-title" title="{{ row[13] }}">{{ row[13] }}</p>
+            <p class="product-price text-success">${{ row[16] }}</p>
+            <p class="product-seller">Listed by
+                <span class="text-info">{{ row[3] }}</span>
+            </p>
+            <a href="details?item={{ row[11] }}" class="btn btn-primary">Details</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<h1 class="text-center mt-5">No Results Found :(</h1>
+{% endif %}
+{% endblock %}

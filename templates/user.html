@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="text-left mt-3 ml-3">
+    <div class="account">
+        <h1 class="text-center">Account settings</h1>
+        <hr>
+        <div class="col1">
+            <h2>Username</h2>
+            <h2>First Name</h2>
+            <h2>Last Name</h2>
+            <h2>Email</h2>
+            <h2>Password</h2>
+        </div>
+        <div class="col2">
+            <h2>{{ data[3] }}</h2>
+            <h2>{{ data[1] }}</h2>
+            <h2>{{ data[2] }}</h2>
+            <h2>{{ data[5] }}</h2>
+            <h2><a href="/change-password" class="btn btn-primary rounded-0">Change password</a></h2>
+        </div>
+    </div>
+    <div class="account">
+        <hr>
+        <h1>Information</h1>
+        <hr>
+        <div class="col1">
+            <h2>Phone Number</h2>
+            <h2>Country</h2>
+            <h2>Shipping Address</h2>
+            <h2>Billing Address</h2>
+        </div>
+        <div class="col2">
+            <h2>{{ data[6] }}</h2>
+            <h2>{{ data[7] }}</h2>
+            <h2>{{ data[9] }}</h2>
+            <h2>{{ data[8] }}</h2>
+        </div>
+        <br>
+        <div class="col1">
+            <h2><a href="/change-info" class="btn btn-primary rounded-0">Edit Information</a></h2>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

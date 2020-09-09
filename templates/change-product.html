@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Add Product
+{% endblock %}
+
+{% block main %}
+<form id="form" action="/change-product" method="POST" onsubmit="return validate()" enctype="multipart/form-data">
+    <h1 class="text-center mt-4">Edit Product Details</h1>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input id="title" class="form-control rounded-0" type="text" name="title" placeholder="Title of product"
+            autofocus value="{{ data[0] }}">
+        <div id="title-feedback" class="invalid-feedback">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" class="form-control rounded-0" name="description"
+            placeholder="Description">{{ data[1] }}</textarea>
+        <div id="description-feedback" class="invalid-feedback">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="categories">Product Categories</label>
+        <select id="categories" class="form-control rounded-0 select" data-live-search="true" title="Product Categories"
+            name="categories">
+            <optgroup label="PC Components">
+                <option {% if data[2] == "motherboard" %} selected {% endif %} value="motherboard">Motherboard</option>
+                <option {% if data[2] == "cpu" %} selected {% endif %} value="cpu">CPU</option>
+                <option {% if data[2] == "cpu fan" %} selected {% endif %} value="cpu fan">CPU Fan</option>
+                <option {% if data[2] == "gpu" %} selected {% endif %} value="gpu">GPU</option>
+                <option {% if data[2] == "ram" %} selected {% endif %} value="ram">RAM</option>
+                <option {% if data[2] == "ssd" %} selected {% endif %} value="ssd">SSD</option>
+                <option {% if data[2] == "hdd" %} selected {% endif %} value="hdd">HDD</option>
+                <option {% if data[2] == "psu" %} selected {% endif %} value="psu">PSU</option>
+                <option {% if data[2] == "case" %} selected {% endif %} value="case">Case</option>
+                <option {% if data[2] == "case fan" %} selected {% endif %} value="case fan">Case Fan</option>
+            </optgroup>
+            <optgroup label="PC Accessories">
+                <option {% if data[2] == "monitor" %} selected {% endif %} value="monitor">Monitor</option>
+                <option {% if data[2] == "keyboard" %} selected {% endif %} value="keyboard">Keyboard</option>
+                <option {% if data[2] == "mouse" %} selected {% endif %} value="mouse">Mouse</option>
+                <option {% if data[2] == "headset" %} selected {% endif %} value="headset">Headset</option>
+                <option {% if data[2] == "speaker" %} selected {% endif %} value="speaker">Speaker</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="form-group text-left">
+        <label for="image">Product Image</label>
+        <div class="change-product-img-container mb-2">
+            <img id="change-product-image" src="{{ data[3] }}" alt="{{ data[0] }}">
+        </div>
+        <input id="image" class="rounded-0" type="file" name="image" accept="image/jpeg" oninput="removeImage()">
+        <div id="image-feedback" class="invalid-feedback">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="price">Price (USD)</label>
+        <input id="price" class="form-control rounded-0" type="number" name="price" placeholder="Price of product"
+            min="0.00" max="10000.00" step="0.01" value="{{ data[4] }}">
+        <div id="price-feedback" class="invalid-feedback">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="amount">Item Quantity</label>
+        <input id="amount" class="form-control rounded-0" type="number" name="amount" placeholder="Quantity of product"
+            value="{{ data[5] }}">
+        <div id="amount-feedback" class="invalid-feedback">
+        </div>
+    </div>
+    <input id="id" class="d-none" type="number" name="id" value="{{ data[6] }}">
+    <input id="category-id" class="d-none" type="number" name="category-id" value="{{ data[7] }}">
+    <div class="form-group">
+        <input id="submit" class="btn btn-primary rounded-0" type="submit" value="Apply Changes">
+    </div>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+    function validate() {
+        let errors = 0;
+        let title = document.querySelector("#title");
+        let title_feedback = document.querySelector("#title-feedback");
+        let description = document.querySelector("#description");
+        let description_feedback = document.querySelector("#description-feedback");
+        let image = document.querySelector("#image");
+        let image_feedback = document.querySelector("#image-feedback");
+        let price = document.querySelector("#price");
+        let price_feedback = document.querySelector("#price-feedback");
+        let amount = document.querySelector("#amount");
+        let amount_feedback = document.querySelector("#amount-feedback");
+
+        // Validate product title
+        if (title.value == "") {
+            title.classList.add("is-invalid");
+            title_feedback.innerHTML = "You must give a title to your product!"
+            errors++;
+        } else if (title.value.length < 10 || title.value.length > 100) {
+            title.classList.add("is-invalid");
+            title_feedback.innerHTML = "Title length must be between 10 and 100 characters!"
+            errors++;
+        } else {
+            title.classList.remove("is-invalid");
+        }
+
+        // Validate description
+        if (description.value == "") {
+            description.classList.add("is-invalid");
+            description_feedback.innerHTML = "Your product must have a description!"
+            errors++;
+        } else if (description.value.length < 20 || description.value.length > 500) {
+            description.classList.add("is-invalid");
+            description_feedback.innerHTML = "Description length must be between 20 and 500 characters!"
+            errors++;
+        } else {
+            description.classList.remove("is-invalid");
+        }
+
+        // Check if any errors occured
+        // It's done this way so every field will give feedback
+        if (errors > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function removeImage() {
+        document.querySelector("#change-product-image").style.display = "none";
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="basket-container">
+    {% if data %}
+    <div class="checkout text-center mb-3">
+        <h1 class="text-center pt-3">Basket</h1>
+        <div class="col1 ml-3 mt-3 text-left">
+            <h2>Cost: <span class="text-success">${{ total_price }}</span></h2>
+            <h2>Unique Items: {{ item_count }}</h2>
+        </div>
+        <div class="col2 mt-3 text-left">
+            <h2>Balance: <span class="text-success">${{ user_balance[0] }}</span></h2>
+            <h2>&nbsp;</h2>
+        </div>
+        <div class="text-center w-75 inline-block mt-3">
+            {% if total_price <= user_balance[0]  %}
+            <button class="btn btn-primary rounded-0 w-25" onclick="finalize()">Order</button>
+            {% else %}
+            <h1>You can't afford these items.</h1>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    <div class="text-left">
+        <h2 class="mt-3 ml-3 mb-3 items-in-basket-label">Items in basket:</h2>
+    </div>
+    {% for row in data %}
+    <div class="basket-item text-left">
+        <img src="{{ row[2] }}" alt="{{ row[0] }}" class="my-product-image">
+        <div class="basket-item-details align-top mb-3">
+            <h1 class="align-top">
+                {{ row[0] }}
+            </h1>
+            <h2 class="align-top">
+                Quantity: {{ row[5] }}
+            </h2>
+            <p class="align-top">
+                {{ row[1] }}
+            </p>
+            <h2 class="align-top text-success">
+                ${{ row[3] }}
+            </h2>
+            <form action="/basket" method="POST" class="align-top">
+                <input value="{{ row[4] }}" name="item" type="number" style="display: none;">
+                <input value="Remove From Basket" type="submit" class="btn btn-primary rounded-0">
+            </form>
+        </div>
+    </div>
+    <hr class="basket-items-hr">
+    {% endfor %}
+    {% else %}
+    <h1 class="text-center pt-3">Basket</h1>
+    <h2 class="text-center pt-3 pb-3">Your basket is empty.</h2>
+    {% endif %}
+</div>
+<div id="finalize" class="">
+    <h1>Finalize</h1>
+    <div class="text-left ml-3 mr-3">
+        <form action="/order" method="POST" class="w-100">
+            <div class="text-center">
+                <input type="submit" value="Finalize Order" class="btn btn-primary rounded-0 mt-2 mb-2 w-auto">
+            </div>
+            <hr class="mt-0 mb-1">
+            <h2>Order Details</h2>
+            <hr class="mt-0 mb-3">
+            <h3>Total Cost: <span class="text-success">${{ total_price }}</span></h3>
+            <h3>Total balance: <span class="text-success">${{ user_balance[0] }}</span></h3>
+            <h3>Unique Items: {{ item_count }}</h3>
+            <hr class="mt-0 mb-1">
+            <h2>Contact Details</h2>
+            <hr class="mt-0 mb-3">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" value="{{ contact[0] }}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" value="{{ contact[1] }}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="billing-address">Billing Address</label>
+                <input id="billing-address" name="billing-address" type="text" value="{{ contact[2] }}"
+                    class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="shipping-address">Shipping Address</label>
+                <input id="shipping-address" name="shipping-address" type="text" value="{{ contact[3] }}"
+                    class="form-control">
+            </div>
+            <input name="data" type="text" value="{{ data }}" class="d-none">
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    let finalizeWindow = document.querySelector("#finalize");
+
+    function finalize() {
+        finalizeWindow.style.display = "block";
+    }
+</script>
+{% endblock %}

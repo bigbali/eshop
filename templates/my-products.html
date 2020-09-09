@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="my-products-container">
+    {% for row in data %}
+    <div class="my-product text-left">
+        <img src="{{ row[2] }}" alt="{{ row[0] }}" class="my-product-image">
+        <div class="my-products-details align-top mb-3">
+            <h1 class="align-top">
+                {{ row[0] }}
+            </h1>
+            <p class="align-top">
+                {{ row[1] }}
+            </p>
+            <form action="/my-products" method="POST" class="align-top">
+                <input value="{{ row[4] }}" name="item" type="number" style="display: none;">
+                <input value="Remove Item" type="submit" class="btn btn-primary rounded-0">
+            </form>
+            <div class="inline-block">
+                <a href="/change-product?item={{ row[4] }}" class="btn btn-primary rounded-0">Edit Details</a>
+            </div>
+        </div>
+    </div>
+    <hr class="my-products-hr">
+    {% endfor %}
+</div>
+{% endblock %}
